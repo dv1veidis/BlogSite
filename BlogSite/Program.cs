@@ -9,11 +9,16 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+#region Authorization
+
+AddAuthorizationPolicies(builder.Services);
+
+#endregion
 
 var app = builder.Build();
 
@@ -40,3 +45,11 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+void AddAuthorizationPolicies(IServiceCollection services)
+{
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserNumber"));
+    });
+}

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace BlogSite.Areas.Identity.Pages.Account
 {
@@ -66,8 +67,9 @@ namespace BlogSite.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [StringLength(15, ErrorMessage = "The Username field should have a maximum of 15 characters.", MinimumLength = 4)]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -112,9 +114,23 @@ namespace BlogSite.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _signInManager.UserManager.FindByNameAsync(Input.UserName);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                    return Page();
+                }
+
+
+                var result = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, false);
                 if (result.Succeeded)
                 {
+                    var claims = new Claim[]
+                    {
+                        new Claim("amr", "pwd"),
+                        //new Claim("UserNumber", "1")
+                    };
+                    await _signInManager.SignInWithClaimsAsync(user, Input.RememberMe, claims);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

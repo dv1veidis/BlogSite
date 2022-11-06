@@ -685,12 +685,13 @@ progress {
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 .row > * {
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 100%;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
-  margin-top: var(--bs-gutter-y);
+    border-spacing: 0 15px;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: var(--bs-gutter-y);
 }
 
 .col {
@@ -1141,6 +1142,7 @@ progress {
   .col-md-9 {
     flex: 0 0 auto;
     width: 75%;
+
   }
   .col-md-10 {
     flex: 0 0 auto;
