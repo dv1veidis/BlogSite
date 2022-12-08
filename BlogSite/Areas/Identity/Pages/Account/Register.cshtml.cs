@@ -79,6 +79,11 @@ namespace BlogSite.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+
+            [Required]
+            [StringLength(18, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
+            [Display(Name = "Username")]
+            public string UserName{ get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -100,17 +105,7 @@ namespace BlogSite.Areas.Identity.Pages.Account
 
             [Required]
             public string Name { get; set; }
-            public string? StreetAddress { get; set; }
-            public string? City { get; set; }
-            public string? State { get; set; }
-            public string? PostalCode { get; set; }
-            public string? PhoneNumber { get; set; }
             public string? Role { get; set; }
-            public int? CompanyId { get; set; }
-            [ValidateNever]
-            public IEnumerable<SelectListItem> RoleList { get; set; }
-            [ValidateNever]
-            public IEnumerable<SelectListItem> CompanyList { get; set; }
         }
 
 
@@ -121,18 +116,9 @@ namespace BlogSite.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp)).GetAwaiter().GetResult();
             }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            Input = new InputModel()
-            {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
-                {
-                    Text = i,
-                    Value = i
-                })
-            };
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -143,12 +129,8 @@ namespace BlogSite.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.PhoneNumber = Input.PhoneNumber;
-                if (Input.Role == SD.Role_User_Comp)
-                {
-                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -158,10 +140,6 @@ namespace BlogSite.Areas.Identity.Pages.Account
                     if (Input.Role == null)
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
                     }
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

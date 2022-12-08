@@ -29,4 +29,8 @@
     <ProjectReference Include="..\BlogSite.Utility\BlogSite.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\User\Controllers\" />
+  </ItemGroup>
+
 </Project>
