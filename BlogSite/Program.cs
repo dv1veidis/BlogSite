@@ -1,25 +1,29 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BlogSite.Data;
-using BlogSite.Areas.Identity.Data;
+using BlogSite.DataAccess;
 using Microsoft.AspNetCore.Authentication;
+using BlogSite.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-#region Authorization
 
-AddAuthorizationPolicies(builder.Services);
-
-#endregion
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 
 var app = builder.Build();
 
@@ -47,10 +51,3 @@ app.MapRazorPages();
 
 app.Run();
 
-void AddAuthorizationPolicies(IServiceCollection services)
-{
-    services.AddAuthorization(options =>
-    {
-        options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserNumber"));
-    });
-}
