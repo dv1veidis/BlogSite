@@ -6,35 +6,42 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <ul class="navbar-nav">
-    <li class="nav-item">
-            <a id="manage" class="nav-link active" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link active">Logout</button>
-        </form>
-    </li>
-    </ul>
+     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a id="blogIndex" class="nav-link" asp-area="User" asp-controller="Blog" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="User" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a id="manage" class="nav-link active" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li class="nav-item">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="nav-link btn btn-link active">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 }
 else
 {
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="nav-link" asp-area="User" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-grow-1 justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link active" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a class="nav-link active" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </li>
         </ul>
     </div>
-    <ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link active" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-    </ul>
 }

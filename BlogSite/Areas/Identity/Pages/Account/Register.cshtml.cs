@@ -103,9 +103,6 @@ namespace BlogSite.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            public string Name { get; set; }
-            public string? Role { get; set; }
         }
 
 
@@ -137,10 +134,9 @@ namespace BlogSite.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if (Input.Role == null)
-                    {
-                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
-                    }
+
+                    await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

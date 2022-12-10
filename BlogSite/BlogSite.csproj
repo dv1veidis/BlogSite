@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNet.Security.OpenId" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.10" />
@@ -27,10 +34,6 @@
     <ProjectReference Include="..\BlogSite.DataAccess\BlogSite.DataAccess.csproj" />
     <ProjectReference Include="..\BlogSite.Models\BlogSite.Models.csproj" />
     <ProjectReference Include="..\BlogSite.Utility\BlogSite.Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\User\Controllers\" />
   </ItemGroup>
 
 </Project>

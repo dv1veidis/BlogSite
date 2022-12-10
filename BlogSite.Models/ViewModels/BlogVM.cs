@@ -15,5 +15,7 @@ namespace BlogSite.Models.ViewModels
         public BlogPost BlogPost { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> CategoryList { get; set; }
+        [ValidateNever]
+        public string? ApplicationUserId { get; set; }
     }
 }

@@ -13,16 +13,20 @@ namespace BlogSite.Models
     {
         [Key]
         public int Id { get; set; }
-        public string UserId { get; set; }
+
+        [Display(Name = "ApplicationUserId")]
+        public string ApplicationUserId { get; set; }
+        [ValidateNever]
+        public ApplicationUser ApplicationUser { get; set; }
         [Required]
         [MaxLength(40)]
         public string Title { get; set; }
         public string Text { get; set; }
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
-        [ValidateNever]
-        public int CategoryId { get; set; }
         [Required]
         [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+        [ValidateNever]
         public Category Category { get; set; }
     }
 }

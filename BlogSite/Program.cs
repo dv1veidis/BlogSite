@@ -4,6 +4,8 @@ using BlogSite.DataAccess;
 using Microsoft.AspNetCore.Authentication;
 using BlogSite.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using BlogSite.DataAccess.Repository.IRepository;
+using BlogSite.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
@@ -14,9 +16,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 // Add services to the container.
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -43,11 +47,11 @@ app.UseAuthentication();;
 
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages();
 
 app.Run();
 
