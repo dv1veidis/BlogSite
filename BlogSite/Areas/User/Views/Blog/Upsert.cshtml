@@ -39,7 +39,7 @@
 			{
 				<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
 			}
-			<a asp-controller="Blog" asp-action="Index" class="btn btn-secondary" style="width:150px">
+			<a onclick="history.go(-1); return false;" class="btn btn-secondary" style="width:150px">
 				Back to List
 			</a>
 		</div>

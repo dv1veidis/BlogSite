@@ -16,6 +16,7 @@ namespace BlogSite.Models
 
         [Display(Name = "ApplicationUserId")]
         public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
         [Required]

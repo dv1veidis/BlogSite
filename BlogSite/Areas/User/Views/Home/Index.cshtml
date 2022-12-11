@@ -1,6 +1,12 @@
-﻿@{
+﻿@using BlogSite.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
+@if (!SignInManager.IsSignedIn(User)){
 <div style="padding-top: 5rem;">
     <div class="card-group">
             <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
@@ -31,6 +37,57 @@
                 <img class="card-img" src="https://cdn.dribbble.com/users/2893989/screenshots/16081108/media/541875058041bda5b8524e3ffa9ead79.png?compress=1&resize=400x300&vertical=top" />
             </div>
         </div>
+         <div style="text-align:center">
+        <h1>
+            SO WHY NOT REGISTER AND JOIN US IN CREATING A COMMUNITY OF BLOGGERS
+        </h1>
+        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register" role="button" aria-controls="offcanvasExample">
+            REGISTER HERE
+        </a>
+    </div>
     </div>
 </div>
-
+}
+else
+{
+<div style="padding-top: 5rem;">
+    <div class="card-group">
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <a class="nav-link" asp-area="User" asp-controller="Blog" asp-action="Upsert">
+                <div class="card-body flex-columnm">
+                    <h4 class="card-title">Explore your interest</h4>
+                    <p class="card-text">Write about anything that peaks your interest!</p>
+                    <img class="card-img align-self-end" src="https://cdn.dribbble.com/users/63407/screenshots/16116269/media/360a1fdc1bc9c1d9994c42d95cd60068.png?compress=1&resize=400x300" />
+                </div>
+            </a>
+        </div>
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <a class="nav-link" asp-area="User" asp-controller="Blog" asp-action="Blogs">
+                <div class="card-body">
+                    <h4 class="card-title">Check out others</h4>
+                    <p class="card-text">Check out what's happening in other people lives!</p>
+                    <img class="card-img" src="https://exec.mit.edu/file-asset/LDW_stock_image?v=1" />
+                </div>
+            </a>
+        </div>
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <a class="nav-link" asp-area="User" asp-controller="Blog" asp-action="Blogs">
+                <div class="card-body">
+                    <h4 class="card-title">Find other Bloggers!</h4>
+                    <p class="card-text">Find people based on your interests and goals!</p>
+                    <img class="card-img" src="https://cdn.dribbble.com/users/1787323/screenshots/14281162/media/d9d37ad3d07f59df22fa1627fa2d20b3.png?compress=1&resize=400x300" />
+                </div>
+            </a>
+        </div>
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <a class="nav-link" asp-area="User" asp-controller="Blog" asp-action="UserBlogs">
+                <div class="card-body flex-column">
+                    <h4 class="card-title">Blogger career!</h4>
+                    <p class="card-text">Come look at your own blogs and see how far you've come!</p>
+                    <img class="card-img align-self-end" src="https://cdn.dribbble.com/users/2893989/screenshots/16081108/media/541875058041bda5b8524e3ffa9ead79.png?compress=1&resize=400x300&vertical=top" />
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+}

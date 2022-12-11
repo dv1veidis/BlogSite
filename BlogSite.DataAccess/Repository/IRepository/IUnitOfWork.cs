@@ -11,6 +11,7 @@ namespace BlogSite.DataAccess.Repository.IRepository
         ICategoryRepository Category { get; }
         IApplicationUserRepository ApplicationUser { get; }
         IBlogPostRepository BlogPost { get; }
+        IReactionRepository Reaction { get; }
         void Save();
     }
 }
