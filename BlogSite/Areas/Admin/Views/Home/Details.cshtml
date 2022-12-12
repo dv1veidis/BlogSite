@@ -1,0 +1,44 @@
+﻿@model BlogSite.Models.ViewModels.BlogVM
+
+<form asp-action="Reaction">
+    <input hidden asp-for="BlogPost.Id" />
+    <input hidden asp-for="@Model.Id" value="@Model.BlogPost.Id" />
+    <div class="card  container pt-4">
+        <div class="card-header bg-primary text-light ml-0  row ">
+            <div class="col-12 col-md-12">
+                <h1 class="text-white-50">Title: @Model.BlogPost.Title</h1>
+                <h2 class="text-white-100">Author: @Model.BlogPost.ApplicationUser.UserName</h2>
+            </div>
+            <div class="col-12 col-md-12 text-end pt-4">
+
+                <span class="badge bg-info pt-2" style="height:30px;">Category: @Model.BlogPost.Category.Name</span>
+                <span class="badge bg-success pt-2" style="height:30px;">Likes: @Model.LikeCount</span>
+                <span class="badge bg-danger pt-2" style="height:30px;">Dislikes: @Model.DislikeCount</span>
+            </div>
+        </div>
+        <div class="card-body row container">
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="row pl-2">
+                            <p class="text-secondary">@Html.Raw(Model.BlogPost.Text)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-lg-6 pb-1">
+                    <a class="btn btn-secondary form-control " onclick="history.go(-1); return false;">Back to List</a>
+                </div>
+                <div class="col-lg-3 pb-1">
+                    <input type="submit" class="btn btn-success form-control" asp-for="@Model.React" value="Like" />
+                </div>
+                <div class="col-lg-3 pb-1">
+                    <input type="submit" class="btn btn-danger form-control" asp-for="@Model.React" value="Dislike" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

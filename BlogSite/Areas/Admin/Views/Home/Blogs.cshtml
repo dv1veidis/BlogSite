@@ -1,0 +1,51 @@
+﻿@using BlogSite.Utility
+@model BlogSite.Models.ViewModels.BlogOptionVM
+
+<div class="row pb-3">
+	<div>
+		<h1 style="padding-bottom: 2vh;">Blog Posts from other users</h1>
+	</div>
+	<partial name="_SearchPartial" />
+		@foreach (var blogPost in Model.BlogPost.Reverse())
+		{
+		<div class="col-lg-10">
+			<div class="content-row p-2">
+				<div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px; minheight: 30vh">
+					<div class="card">
+						<div class="card-body">
+							<div class="pl-1">
+								<p class="card-title h3 text-primary">@blogPost.Title</p>
+								<p class="card-subtitle h5 text-secondary">By: @blogPost.ApplicationUser.UserName</p>
+								<div class="short-Text">
+									<p class="card-title text-info">@Html.Raw(@blogPost.Text)</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<div class="col-12 col-md-4 pb-1">
+								<a asp-action="Details" class="btn btn-primary form-control" asp-route-blogPostId="@blogPost.Id">
+									View Post
+								</a>
+							</div>
+							@if (User.IsInRole(SD.Role_Admin))
+							{
+								<div class="col-12 col-md-4 pb-1">
+									<a href="/User/Blog/Upsert?id=@blogPost.Id" class="btn btn-info form-control">
+										Edit
+									</a>
+								</div>
+								<div class="col-12 col-md-4 pb-1">
+									<a onClick="return Delete('/User/Blog/Delete/@blogPost.Id')" class="btn btn-danger form-control">
+										Delete
+									</a>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		}
+</div>

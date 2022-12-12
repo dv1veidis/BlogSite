@@ -1,0 +1,20 @@
+﻿@model BlogSite.Models.ViewModels.BlogOptionVM
+
+<form method="get" asp-action="SearchedBlogs">
+	<div class="mb-3 col-6">
+		<h3>Select your category</h3>
+		<label asp-for="@Model.CategoryListId" hidden></label>
+		<select asp-for="@Model.CategoryListId" asp-items="@Model.CategoryList" class="form-select">
+			<option disabled>--Select Category--</option>
+			<option value="" selected>All</option>
+		</select>
+	</div>
+	<div class="mb-3 col-6">
+		<h3>Find your favourite Blogger</h3>
+		<label asp-for="@Model.UserName" hidden></label>
+		<input asp-for="@Model.UserName" class="form-control" />
+	</div>
+	<div class="mb-3 col-6">
+		<button type="submit" class="btn btn-primary" style="width:150px">Search</button>
+	</div>
+</form>
