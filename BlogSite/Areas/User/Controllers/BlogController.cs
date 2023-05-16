@@ -48,7 +48,7 @@ namespace BlogSite.Areas.User.Controllers
         {
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
             Claim claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim.Value == null)
+            if (claim == null)
             {
                 return Redirect("Index");
             }
@@ -209,29 +209,36 @@ namespace BlogSite.Areas.User.Controllers
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
             Claim claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             Reaction reaction = _unitOfWork.Reaction.GetFirstOrDefault(u => u.BlogPostId == id && u.ApplicationUserId == claim.Value);
-            if (reaction == null)
+            if(id == 0)
             {
-                Reaction reactionNew = new()
-                {
-                    ApplicationUserId = claim.Value,
-                    BlogPostId = id,
-                    Action = react
-                };
-                _unitOfWork.Reaction.Add(reactionNew);
+                return Redirect("Blogs");
             }
             else
             {
-                Reaction reactionNew = new()
+                if (reaction == null)
                 {
-                    Id= reaction.Id,
-                    ApplicationUserId = claim.Value,
-                    BlogPostId = id,
-                    Action = react
-                };
-                _unitOfWork.Reaction.Update(reactionNew);
+                    Reaction reactionNew = new()
+                    {
+                        ApplicationUserId = claim.Value,
+                        BlogPostId = id,
+                        Action = react
+                    };
+                    _unitOfWork.Reaction.Add(reactionNew);
+                }
+                else
+                {
+                    Reaction reactionNew = new()
+                    {
+                        Id= reaction.Id,
+                        ApplicationUserId = claim.Value,
+                        BlogPostId = id,
+                        Action = react
+                    };
+                    _unitOfWork.Reaction.Update(reactionNew);
+                }
+                _unitOfWork.Save();
+                return Redirect("Details?blogPostId="+id);
             }
-            _unitOfWork.Save();
-            return Redirect("Details?blogPostId="+id);
 
         }
 

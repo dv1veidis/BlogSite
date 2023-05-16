@@ -21,7 +21,7 @@ namespace BlogSite.DataAccess.Repository
         }
         public void Add(T entity)
         {
-            dbSet.Add(entity);
+            dbSet.Add(entity);   
         }
 
         public IEnumerable<T> GetAll(string? includeProperties = null)
